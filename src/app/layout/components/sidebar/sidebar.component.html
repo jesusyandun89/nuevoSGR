@@ -3,6 +3,52 @@
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;{{ 'Dashboard' | translate }}
         </a>
+        <div class="nested-menu">
+            <a class="list-group-item" (click)="addExpandClass('equipos')">
+                <span><i class="fa fa-fw fa-desktop"></i>&nbsp; {{ 'Equipos' | translate }}</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'equipos'">
+                <ul class="submenu">
+                    <li>
+                        <a routerLink="/crearEquipos" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <i class="fa fa-plus-square"></i>&nbsp;{{ 'Crear Equipos' | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nested" [class.expand]="showMenu === 'equipos'">
+                <ul class="submenu">
+                    <li>
+                        <a routerLink="/crearEquipos" [routerLinkActive]="['router-link-disabled']" class="list-group-item">
+                            <i class="fa fa-minus-square"></i>&nbsp;{{ 'Eliminar Equipos' | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </div>
+        <div class="nested-menu">
+            <a class="list-group-item" (click)="addExpandClass('transfer')">
+                <span><i class="fa fa-exchange"></i>&nbsp; {{ 'Transferencias' | translate }}</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'transfer'">
+                <ul class="submenu">
+                    <li>
+                        <a routerLink="/ingresos" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <i class="fa fa-arrow-right"></i>&nbsp;{{ 'Ingreso de Equipos' | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nested" [class.expand]="showMenu === 'transfer'">
+                <ul class="submenu">
+                    <li>
+                        <a routerLink="/egresos" [routerLinkActive]="['router-link-disabled']" class="list-group-item">
+                            <i class="fa fa-arrow-left"></i>&nbsp;{{ 'Egreso de Equipos' | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </div>
         <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;{{ 'Charts' | translate }}
         </a>
