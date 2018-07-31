@@ -17,8 +17,8 @@ const routes: Routes = [
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
             { path: 'crearEquipos', loadChildren: './crearEquipos/crearEquipos.module#crearEquiposModule' },
-            { path: 'ingresos', loadChildren: './ingresos/ingresos.module#ingresosModule' },
-            { path: 'egresos', loadChildren: './egresos/egresos.module#egresosModule' }
+            { path: 'ingresos', loadChildren: './ingresos/ingresos.module#IngresosModule' },
+            { path: 'egresos', loadChildren: './egresos/egresos.module#EgresosModule' }
         ]
     }
 ];
