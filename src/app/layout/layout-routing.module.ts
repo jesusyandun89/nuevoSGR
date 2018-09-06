@@ -18,7 +18,8 @@ const routes: Routes = [
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
             { path: 'crearEquipos', loadChildren: './crearEquipos/crearEquipos.module#crearEquiposModule' },
             { path: 'ingresos', loadChildren: './ingresos/ingresos.module#IngresosModule' },
-            { path: 'egresos', loadChildren: './egresos/egresos.module#EgresosModule' }
+            { path: 'egresos', loadChildren: './egresos/egresos.module#EgresosModule' },
+            { path: 'empresas', loadChildren: './empresas/empresas.module#EmpresasModule' }
         ]
     }
 ];

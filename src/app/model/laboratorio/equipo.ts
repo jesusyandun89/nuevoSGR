@@ -1,7 +1,7 @@
 import { Bodega } from './bodega';
 import { Empresa } from './empresa';
-import { Marca } from './marca';
-import { Modelo } from './modelo';
+import { MarcaxEquipos } from './marcaxEquipos';
+import { ModeloxMarcas } from './modeloxMarcas';
 import { Tipo } from './tipo';
 import { Serie } from './serie';
 export class Equipo {
@@ -9,7 +9,7 @@ export class Equipo {
     bodega: Bodega;
     empresa: Empresa;
     tipo: Tipo;
-    marca: Marca;
-    modelo: Modelo;
+    marcaxEquipo: MarcaxEquipos;
+    modeloxMarca: ModeloxMarcas;
     series: Serie[];
 }

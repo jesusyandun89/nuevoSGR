@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 
 @Component({
-  selector: 'app-ingresos',
-  templateUrl: './ingresos.component.html',
-  styleUrls: ['./ingresos.component.scss'],
+  selector: 'app-empresas',
+  templateUrl: './empresas.component.html',
+  styleUrls: ['./empresas.component.scss'],
   animations: [routerTransition()]
 })
-export class IngresosComponent implements OnInit {
+export class EmpresasComponent implements OnInit {
 
   constructor() { }
 
