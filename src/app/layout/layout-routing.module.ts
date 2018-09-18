@@ -16,10 +16,15 @@ const routes: Routes = [
             { path: 'grid', loadChildren: './grid/grid.module#GridModule' },
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
-            { path: 'crearEquipos', loadChildren: './crearEquipos/crearEquipos.module#crearEquiposModule' },
+            { path: 'crearequipos', loadChildren: './crear-equipos/crear-equipos.module#CrearEquiposModule' },
             { path: 'ingresos', loadChildren: './ingresos/ingresos.module#IngresosModule' },
             { path: 'egresos', loadChildren: './egresos/egresos.module#EgresosModule' },
-            { path: 'empresas', loadChildren: './empresas/empresas.module#EmpresasModule' }
+            { path: 'empresas', loadChildren: './empresas/empresas.module#EmpresasModule' },
+            { path: 'activarequipos', loadChildren: './activar-equipos/activar-equipos.module#ActivarEquiposModule' },
+            { path: 'auditoriaequipos', loadChildren: './auditoria-equipos/auditoria-equipos.module#AuditoriaEquiposModule' },
+            { path: 'buscarequipos', loadChildren: './buscar-equipos/buscar-equipos.module#BuscarEquiposModule' },
+            { path: 'cambiarmodelo', loadChildren: './cambiar-modelo/cambiar-modelo.module#CambiarModeloModule' },
+            { path: 'eliminarequipos', loadChildren: './eliminar-equipos/eliminar-equipos.module#EliminarEquiposModule' }
         ]
     }
 ];
