@@ -14,7 +14,8 @@ const httpOptions = {
 })
 export class CrearEquiposService {
 
-  private domain: string = "http://192.168.21.152:8088/sgr/sgr2/";
+  //private domain: string = "http://192.168.21.152:8088/sgr/sgr2/";
+  private domain: string = "/sgr2/"
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 

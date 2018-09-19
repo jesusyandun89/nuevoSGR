@@ -14,32 +14,34 @@
             </fieldset>
             <fieldset class="form-group">
                 <label>Empresa</label>
-                <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
+                <select class="form-control" (change)="getTipo($event.target.value)">
+                    <option value="?"> --Elija la empresa-- </option>
+                    <option *ngFor="let empresa of empresas" value="{{empresa.id}}"> 
+                        {{empresa.nombreEmpresa}} 
+                    </option>
                 </select>
             </fieldset>
             <fieldset class="form-group">
-                <label>Tipo</label>
-                <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
+                <label>Tipo de equipo</label>
+                <select class="form-control" (change)="getMarca($event.target.value)">
+                    <option value="?"> --Elija el tipo de equipo-- </option>
+                    <option *ngFor="let tipo of equiposInfo" value="tipo.idEquipo"> {{tipo.nombreEquipo}} </option>
                 </select>
             </fieldset>
         </div>
         <div class="col-lg-6">
             <fieldset class="form-group">
-                <label>Tipo</label>
-                <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
+                <label>Marca de equipo</label>
+                <select class="form-control" (change)="getModelo($event.target.value)">
+                    <option value="?"> --Elija la marca-- </option>
+                    <option *ngFor="let marca of marcaEquipos" value="marca.idMarca"> {{marca.nombreMarca}} </option>
                 </select>
             </fieldset>
             <fieldset class="form-group">
-                <label>Tipo</label>
-                <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
+                <label>Modelo de equipos</label>
+                <select class="form-control" (change)="getModelo($event.target.value)">
+                    <option value="?"> --Elija el modelo-- </option>
+                    <option *ngFor="let modelo of modeloEquipos" value="modelo.idModelo"> {{modelo.nombreModelo}} </option>
                 </select>
             </fieldset>
             <fieldset class="form-group">

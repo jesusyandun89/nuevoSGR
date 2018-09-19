@@ -1,0 +1,7 @@
+{
+    "/sgr/*": {
+        "target": "http://192.168.21.152:8088/sgr",
+        "secure": false,
+        "changeOrigin": true
+    }
+}
