@@ -5,7 +5,7 @@ import { EquipoInfo } from '../../model/laboratorio/equipoInfo';
 import { ModeloxMarcas } from '../../model/laboratorio/modeloxMarcas';
 import { MarcaxEquipos } from '../../model/laboratorio/marcaxEquipos';
 import { Tipo } from '../../model/laboratorio/tipo';
-import { Empresa } from '../../model/laboratorio/empresa';
+import { YtblSgrEmpresa } from '../../model/login/ytblSgrEmpresa';
 
 @Component({
   selector: 'app-crear-equipos',
@@ -19,7 +19,7 @@ export class CrearEquiposComponent implements OnInit {
   modeloEquipos: ModeloxMarcas[];
   marcaEquipos: MarcaxEquipos[];
   tipoEquipos: Tipo[];
-  empresas: Empresa[];
+  empresas: YtblSgrEmpresa[];
 
   //?Variables objeto usadas para la carga en los arrays
   equipo: any = {};
