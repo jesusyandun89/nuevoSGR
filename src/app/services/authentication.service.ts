@@ -29,13 +29,12 @@ export class AuthenticationService {
       );
   }
 
-  login(login: Login): Observable<Session[]> {
-    const url = `${this.domain}login=${login}`;
-    return this.http.get<Session[]>(url)
-      .pipe(
-        tap(detailrubros => this.log('fetched Login')),
-        catchError(this.handleError('getLogin', []))
-      );
+  login(login: Login): Observable<ConsultaUsuarios> {
+    const url = `${this.domain}login/`;
+    return this.http.post<ConsultaUsuarios>(url, login, httpOptions).pipe(
+      tap((consultausuario: ConsultaUsuarios) => this.log(`Login w/ id=${consultausuario.userSgr}`)),
+      catchError(this.handleError<ConsultaUsuarios>('Login'))
+    );
   }
 
   errorHandler(error: Response) {

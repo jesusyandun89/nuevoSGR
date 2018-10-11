@@ -30,7 +30,9 @@
         "core-js": "^2.5.5",
         "font-awesome": "^4.7.0",
         "ng2-charts": "^1.6.0",
+        "ngx-pagination": "^3.2.1",
         "rxjs": "^6.1.0",
+        "xlsx": "^0.14.0",
         "yarn": "^1.6.0",
         "zone.js": "^0.8.26"
     },

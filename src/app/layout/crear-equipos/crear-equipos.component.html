@@ -1,59 +1,90 @@
 <div [@routerTransition]>
   <app-page-header [heading]="'Crear Equipos'" [icon]="'fa-edit'"></app-page-header>
-    <div class="row">
+    <div class="row" [hidden]="!cargaArchivo">
     <div class="col-lg-6">
             <fieldset class="form-group">
                 <label>Bodega</label>
-                <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <select class="form-control" (change)="asignaAlmacen($event.target.value)" formControlName="almacen">
+                    <option value="?"> --Elija la bodega-- </option>
+                    <option *ngFor="let almacen of consultaAlmacenes" value="{{almacen.idAlma}}"> 
+                        {{almacen.nombreHiperk}} 
+                    </option>
                 </select>
             </fieldset>
             <fieldset class="form-group">
                 <label>Empresa</label>
-                <select class="form-control" (change)="getTipo($event.target.value)">
+                <select class="form-control" (change)="getTipo($event.target.value)" formControlName="empresa">
                     <option value="?"> --Elija la empresa-- </option>
-                    <option *ngFor="let empresa of empresas" value="{{empresa.id}}"> 
-                        {{empresa.nombreEmpresa}} 
+                    <option *ngFor="let empresa of consultaEmpresasObj" value="{{empresa.idEmp}}"> 
+                        {{empresa.nombreHiperk}} 
                     </option>
                 </select>
             </fieldset>
             <fieldset class="form-group">
                 <label>Tipo de equipo</label>
-                <select class="form-control" (change)="getMarca($event.target.value)">
+                <select class="form-control" (change)="getMarca($event.target.value)" formControlName="tipo">
                     <option value="?"> --Elija el tipo de equipo-- </option>
-                    <option *ngFor="let tipo of equiposInfo" value="tipo.idEquipo"> {{tipo.nombreEquipo}} </option>
+                    <option *ngFor="let tipo of equiposInfo" value="{{tipo.idEquipo}}"> {{tipo.nombreEquipo}} </option>
                 </select>
             </fieldset>
         </div>
         <div class="col-lg-6">
             <fieldset class="form-group">
                 <label>Marca de equipo</label>
-                <select class="form-control" (change)="getModelo($event.target.value)">
+                <select class="form-control" (change)="getModelo($event.target.value)" formControlName="marca">
                     <option value="?"> --Elija la marca-- </option>
-                    <option *ngFor="let marca of marcaEquipos" value="marca.idMarca"> {{marca.nombreMarca}} </option>
+                    <option *ngFor="let marca of marcaEquipos" value="{{marca.idMarca}}"> {{marca.nombreMarca}} </option>
                 </select>
             </fieldset>
             <fieldset class="form-group">
                 <label>Modelo de equipos</label>
-                <select class="form-control" (change)="getModelo($event.target.value)">
+                <select class="form-control" (change)="asignamodelo($event.target.value)" formControlName="modelo">
                     <option value="?"> --Elija el modelo-- </option>
-                    <option *ngFor="let modelo of modeloEquipos" value="modelo.idModelo"> {{modelo.nombreModelo}} </option>
+                    <option *ngFor="let modelo of modeloEquipos" value="{{modelo.idModelo}}"> {{modelo.nombreModelo}} </option>
                 </select>
             </fieldset>
             <fieldset class="form-group">
-                <label>Cargar equipos</label>
-                <input type="file" class="form-control-file" id="exampleInputFile">
+                <div *ngIf="mostratInput">
+                    <label>Cargar equipos</label>
+                    <br>
+                    <input type="file" class="btn btn-info" (change)="onFileChange($event)" id="exampleInputFile">
+                </div>
+                <div *ngIf="!mostratInput">
+                    <label>Archivo cargado</label>
+                    <br>
+                    <span class="nombreDocumento">{{nombreArchivo}} </span>
+                    <button type="button" class="btn btn-danger" (click)="borraCarga()" >X</button>
+                </div>
             </fieldset>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="submit" class="btn btn-primary" [disabled]="valido" (click)="guardaEquipos()">Guardar</button>
             </div>
         </div>
-    
+    </div>
+    <div class="row" [hidden]="cargaArchivo">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Identificador 1</th>
+                <th scope="col">Identificador 2</th>
+                <th scope="col">Identificador 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let serie of series | paginate: { itemsPerPage: 6, currentPage: p }">
+                    <th scope="row"> {{serie.id}} </th>
+                    <td *ngFor="let identificador of serie.identificador">{{ identificador.nombreIdentificador }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p =$event" class="col-lg-8"></pagination-controls>
+        <div class="col-lg-4 botonesTabla">
+            <button class="btn btn-success" (click)="aceptarValores()" >Aceptar</button>
+            &nbsp;
+            <button class="btn btn-danger" (click)="borraCarga()">Cancelar</button>
+        </div>
     </div>
 </div>

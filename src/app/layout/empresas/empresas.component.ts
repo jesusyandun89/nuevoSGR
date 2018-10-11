@@ -37,8 +37,6 @@ export class EmpresasComponent implements OnInit {
       this.roles = this.consultaUsuariosObj[i].ytblSgrRol;
       this.almacenesObj = this.almacenes;
       this.rolesObj = this.roles;
-      sessionStorage.setItem("almacenes", JSON.stringify(this.almacenes));
-      sessionStorage.setItem("roles", JSON.stringify( this.roles));
     }
     for(let i = 0; i < this.almacenesObj.length; i++) {
       for(let j = 0; j < this.almacenesObj[i].ytblSgrEmpresa.length; j++) {
@@ -50,17 +48,19 @@ export class EmpresasComponent implements OnInit {
         }
       }
     }
-    sessionStorage.setItem("empresas", JSON.stringify(this.empresasObj));
     for(let i = 0; i < this.rolesObj.length; i++ ) {
       this.perfiles = this.rolesObj[i].ytblSgrProfile;
       this.perfilesObj = this.perfiles;
-      sessionStorage.setItem("almacenes", JSON.stringify(this.modulos));
     }
     for(let i = 0; i < this.perfilesObj.length; i++ ) {
       this.modulos = this.perfilesObj[i].ytblSgrModule;
       this.modulosObj = this.modulos;
-      sessionStorage.setItem("almacenes", JSON.stringify(this.modulos));
     }
+    sessionStorage.setItem("almacenes", JSON.stringify(this.almacenesObj));
+    sessionStorage.setItem("empresas", JSON.stringify(this.empresasObj));
+    sessionStorage.setItem("roles", JSON.stringify( this.rolesObj));
+    sessionStorage.setItem("perfiles", JSON.stringify(this.perfilesObj));
+    sessionStorage.setItem("modulos", JSON.stringify(this.modulosObj));
 
     this.form = new FormGroup({
       empresa: new FormControl('', Validators.required)
@@ -75,9 +75,4 @@ export class EmpresasComponent implements OnInit {
     this.empresa = this.empresasObj.find(x => x.idEmp === id);
     this.valido = false;
   }
-
-  verificaValores() {
-    sessionStorage.setItem("almacenes", JSON.stringify(this.empresa));
-  }
-
 }

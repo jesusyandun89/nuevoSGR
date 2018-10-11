@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { EquipoInfo } from '../model/laboratorio/equipoInfo';
 import { MessageService } from './message.service';
+import { EquiposCreacion } from '../model/laboratorio/equiposCreacion';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -26,6 +27,14 @@ export class CrearEquiposService {
         tap(detailrubros => this.log('fetched EquiposxEmpresa')),
         catchError(this.handleError('getEquiposxEmpresa', []))
       );
+  }
+
+  creacionEquipos(equiposCreacion: EquiposCreacion): Observable<EquiposCreacion> {
+    const url = `${this.domain}/EquiposCreacion/`;
+    return this.http.post<EquiposCreacion>(url, equiposCreacion, httpOptions).pipe(
+      tap((calculateValue: EquiposCreacion) => this.log(`added CalculateValue w/ ${equiposCreacion}`)),
+      catchError(this.handleError<EquiposCreacion>('addEquipos'))
+    );
   }
 
   errorHandler(error: Response) {

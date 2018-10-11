@@ -6,6 +6,14 @@ import { ModeloxMarcas } from '../../model/laboratorio/modeloxMarcas';
 import { MarcaxEquipos } from '../../model/laboratorio/marcaxEquipos';
 import { Tipo } from '../../model/laboratorio/tipo';
 import { YtblSgrEmpresa } from '../../model/login/ytblSgrEmpresa';
+import { YtblSgrAlmacenes } from '../../model/login/ytblSgrAlmacenes';
+import * as XLSX from 'xlsx';
+import { Serie } from '../../model/laboratorio/serie';
+import { Identificador } from '../../model/laboratorio/identificador';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { EquiposCreacion } from '../../model/laboratorio/equiposCreacion';
+import { EquiposxEmpresa } from '../../model/laboratorio/equiposxEmpresa ';
+type AOA = any [][];
 
 @Component({
   selector: 'app-crear-equipos',
@@ -19,14 +27,23 @@ export class CrearEquiposComponent implements OnInit {
   modeloEquipos: ModeloxMarcas[];
   marcaEquipos: MarcaxEquipos[];
   tipoEquipos: Tipo[];
-  empresas: YtblSgrEmpresa[];
+  series: Serie[];
+  identificadores: Identificador[];
 
   //?Variables objeto usadas para la carga en los arrays
   equipo: any = {};
   modelo: any = {};
   marca: any = {};
   tipo: any = {};
-  empresa: any = {};
+  serie: any = {};
+  tipoTarea: any = {};
+  equipoxEmpresa: any = {};
+
+  //?Variables funcionales
+  mostratInput: boolean = true;
+  nombreArchivo: string;
+  cargaArchivo: boolean = true;
+  msg: string;
 
   //?Variables de validación para habilitar y deshabilitar combos
   bodegaValida: boolean = true;
@@ -34,44 +51,154 @@ export class CrearEquiposComponent implements OnInit {
   tipoValida: boolean = true;
   marcaValida: boolean = false;
   modeloValida: boolean = false;
+  valido: boolean = false;
 
-  constructor(private creaEquiposService: CrearEquiposService) { }
+  consultaEmpresasObj: YtblSgrEmpresa[];
+  consultaAlmacenes: any = {};
+  consultaAlmacenesObj: YtblSgrAlmacenes[];
+
+  //?Variables usadas para subir los identificadores de los equipos.
+  data: AOA = [ [], [] ];
+	wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
+  fileName: string = 'SheetJS.xlsx';
+  identificador: any = {};
+  equipoCreacion: any = {};
+
+  //?Variables objeto
+  equipoCreacionObj: EquiposCreacion;
+  almacenObj: YtblSgrAlmacenes;
+  empresaObj: YtblSgrEmpresa;
+  tipoObj: EquiposxEmpresa;
+  marcaObj: MarcaxEquipos;
+  modeloObj: ModeloxMarcas;
+  
+
+  constructor(private creaEquiposService: CrearEquiposService) {}
 
   form;
   ngOnInit() {
     this.getEmpresas();
+    this.getAlmacenes();
+
+    this.form = new FormGroup({
+      almacen: new FormControl('', Validators.required),
+      empresa: new FormControl('', Validators.required),
+      tipo: new FormControl('', Validators.required),
+      marca: new FormControl('', Validators.required),
+      modelo: new FormControl('', Validators.required)
+    })
   }
 
-  crearEquipo(Equipo) {
+  onFileChange(evt: any) {
+    this.series = [];
+		/* wire up file reader */
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    this.nombreArchivo = target.files[0].name;
+		if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+		const reader: FileReader = new FileReader();
+		reader.onload = (e: any) => {
+			/* read workbook */
+			const bstr: string = e.target.result;
+			const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
 
+			/* grab first sheet */
+			const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+			/* save data */
+      this.data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
+      
+      for(let i = 1; i< this.data.length; i++){
+        this.serie = {};
+        this.identificadores = [];
+        this.identificador = {};
+        this.identificador.nombreIdentificador = this.data[i][0];
+        this.identificadores.push(this.identificador);
+        this.identificador = {};
+        this.identificador.nombreIdentificador = this.data[i][1];
+        this.identificadores.push(this.identificador);
+        this.identificador = {};
+        this.identificador.nombreIdentificador = this.data[i][2];
+        this.identificadores.push(this.identificador);
+
+        this.serie.identificador = this.identificadores;
+        this.serie.id = i;
+        
+        this.series.push(this.serie);
+
+      }
+      this.cargaArchivo = false;
+      console.log(this.series);
+		};
+    reader.readAsBinaryString(target.files[0]);
   }
 
-  actualizaEquipo(Equipo) {
-    
+  borraCarga() {
+    this.mostratInput = true;
+    this.cargaArchivo = true;
+    this.nombreArchivo = "";
+    this.series = [];
+  }
+
+  asignaAlmacen(id: number) {
+    this.almacenObj = this.consultaAlmacenes.find(x => x.idAlma == id);
+  }
+
+  asignaTipo(id: number) {
+    this.tipoObj = this.equiposInfo.find(x => x.idEquipo === id);
+  }
+
+  aceptarValores() {
+    this.mostratInput = false;
+    this.cargaArchivo = true;
+  }
+  
+  guardaEquipos(Equipo) {
+    this.tipoTarea = {};
+    this.tipoTarea.nameTarea = "Creación de equipos";
+    this.tipoTarea.isValid = true;
+
+    this.marcaObj.modeloxMarcas = [];
+    this.marcaObj.modeloxMarcas.push(this.modeloObj);
+
+    this.equipoxEmpresa.idEquipo = this.tipoObj.idEquipo;
+    this.equipoxEmpresa.nombreEquipo = this.tipoObj.nombreEquipo;
+    this.equipoxEmpresa.marcaxEquipos = this.marcaObj;
+
+    this.equipoCreacion.tipoTarea = this.tipoTarea;
+    this.equipoCreacion.ytblSgrAlmacene = this.almacenObj;
+    this.equipoCreacion.equiposxEmpresa = this.equipoxEmpresa;
+
+    this.equipoCreacion.series = [];
+    this.equipoCreacion.series.push(this.series);
+
+    this.creaEquiposService.creacionEquipos(this.equipoCreacion)
+    .subscribe(equipos => {
+      this.msg = "Equipos creados con exito";
+    })
+
+    console.log(this.equipoCreacion);
   }
 
   getInformacion(idEmpresa: number) {
     this.creaEquiposService.getInformacion(idEmpresa).subscribe((equipoInformacion) => {
       this.equiposInfo = equipoInformacion;
-      console.log(this.equiposInfo);
     }, (error) => {
       console.log(error);
     });
   }
 
   getEmpresas() {
-    this.empresa = {};
-    this.empresas = [];
-    this.empresa.id = 1;
-    this.empresa.nombreEmpresa = "TVCable";
-    this.empresas.push(this.empresa);
-    this.empresa = {};
-    this.empresa.id = 5;
-    this.empresa.nombreEmpresa = "Setel";
-    this.empresas.push(this.empresa);
+    this.consultaEmpresasObj =  JSON.parse(sessionStorage.getItem("empresas"));
+  }
+
+  getAlmacenes() {
+    this.consultaAlmacenes =  JSON.parse(sessionStorage.getItem("almacenes"));
+    this.consultaAlmacenes.ytblSgrEmpresa = this.consultaEmpresasObj;
   }
 
   getTipo(id: number): void {
+    this.empresaObj = this.consultaEmpresasObj.find(x => x.idEmp == id);
     this.getInformacion(id);
   }
 
@@ -87,7 +214,7 @@ export class CrearEquiposComponent implements OnInit {
         this.marcaEquipos.push(this.marca);
       }
     }
-    console.log(this.marcaEquipos);
+    this.tipoObj = this.equiposInfo.find(x => x.idEquipo == id);
   }
 
   getModelo(id: number): void {
@@ -101,7 +228,11 @@ export class CrearEquiposComponent implements OnInit {
         this.modeloEquipos.push(this.modelo);
       }
     }
-    console.log(this.modeloEquipos);
+    this.marcaObj = this.marcaEquipos.find(x => x.idMarca == id);
+  }
+
+  asignamodelo(id: number): void {
+    this.modeloObj = this.modeloEquipos.find(x => x.idModelo == id);
   }
 
 }

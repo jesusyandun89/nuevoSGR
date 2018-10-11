@@ -3,10 +3,10 @@ import { YtblSgrAlmacenes } from "../login/ytblSgrAlmacenes";
 import { EquiposxEmpresa } from "./equiposxEmpresa ";
 import { Serie } from "./serie";
 
-export interface EquipoCreacion {
+export interface EquiposCreacion {
     id: number;
     tipoTarea: TipoTarea;
-    ytblSgrAlmacen: YtblSgrAlmacenes;
+    ytblSgrAlmacene: YtblSgrAlmacenes;
     equiposxEmpresa: EquiposxEmpresa;
     series: Serie[];
 }

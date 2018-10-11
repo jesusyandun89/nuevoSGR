@@ -4,7 +4,7 @@ import { routerTransition } from '../router.animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
 import { ConsultaUsuarios } from '../model/login/consultaUsuarios';
-import { Observable } from 'rxjs';
+import { Login } from '../model/login/login';
 
 @Component({
     selector: 'app-login',
@@ -16,7 +16,9 @@ export class LoginComponent implements OnInit {
 
     KEY = 'session';
     value: any = null;
-    consultaUsuarios: ConsultaUsuarios[];
+    consultaUsuario: ConsultaUsuarios;
+    login: any = {};
+    loginEnvio: Login;
     form;
 
     constructor(public router: Router, private loginService: AuthenticationService) {}
@@ -41,11 +43,13 @@ export class LoginComponent implements OnInit {
 
     validaDatos(): boolean {
         if(this.form.value != "") {
-            if(this.form.value.usuario == "wamorales") {
-                this.getUser();
-                return true;
-            }
-            else return false;
+            this.login.usuario = this.form.value.usuario;
+            this.login.password = this.form.value.password;
+
+            this.loginEnvio = this.login;
+            
+            this.getUser();
+            return true;
         }
         else return false;
     }
@@ -55,18 +59,18 @@ export class LoginComponent implements OnInit {
     }
 
     getUser() {
-        this.loginService.getUsers().subscribe((usuarios)=>{
-            this.consultaUsuarios = usuarios;
-            sessionStorage.setItem(this.KEY, JSON.stringify(this.consultaUsuarios));
+        this.loginService.login(this.loginEnvio).subscribe((usuario)=>{
+            this.consultaUsuario = usuario;
+            console.log(this.consultaUsuario);
+            sessionStorage.setItem(this.KEY, JSON.stringify(this.consultaUsuario));
         },(error)=>{
             console.log(error);
         });
-        
     }
 
     setSession() {
         localStorage.setItem('isLoggedin', 'true');
-        localStorage.setItem(this.KEY, JSON.stringify(this.consultaUsuarios));
+        localStorage.setItem(this.KEY, JSON.stringify(this.consultaUsuario));
         const myObjStr = JSON.stringify(localStorage.getItem(this.KEY));
 
         //console.log(myObjStr);
