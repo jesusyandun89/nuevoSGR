@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
-import { ConsultaUsuarios } from '../model/login/consultaUsuarios';
 import { Login } from '../model/login/login';
+import { Session } from '../model/login/session';
 
 @Component({
     selector: 'app-login',
@@ -16,9 +16,10 @@ export class LoginComponent implements OnInit {
 
     KEY = 'session';
     value: any = null;
-    consultaUsuario: ConsultaUsuarios;
+    session: Session;
     login: any = {};
     loginEnvio: Login;
+    msg: string;
     form;
 
     constructor(public router: Router, private loginService: AuthenticationService) {}
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
 
     onLoggedin() {
         if(this.validaDatos()) {
-            this.setSession();
+            this.getUser();
         }
         else {
             alert("Error");
@@ -43,12 +44,9 @@ export class LoginComponent implements OnInit {
 
     validaDatos(): boolean {
         if(this.form.value != "") {
-            this.login.usuario = this.form.value.usuario;
-            this.login.password = this.form.value.password;
-
+            this.login.user = this.form.value.usuario;
+            this.login.pwd = this.form.value.password;
             this.loginEnvio = this.login;
-            
-            this.getUser();
             return true;
         }
         else return false;
@@ -60,9 +58,15 @@ export class LoginComponent implements OnInit {
 
     getUser() {
         this.loginService.login(this.loginEnvio).subscribe((usuario)=>{
-            this.consultaUsuario = usuario;
-            console.log(this.consultaUsuario);
-            sessionStorage.setItem(this.KEY, JSON.stringify(this.consultaUsuario));
+            this.session = usuario;
+            if(this.session.userLogin == "TRUE") {
+                this.router.navigate(['empresas']);
+                sessionStorage.setItem(this.KEY, JSON.stringify(this.session));
+                this.setSession();
+            } else {
+                this.msg = this.session.msg;
+            }
+            
         },(error)=>{
             console.log(error);
         });
@@ -70,11 +74,7 @@ export class LoginComponent implements OnInit {
 
     setSession() {
         localStorage.setItem('isLoggedin', 'true');
-        localStorage.setItem(this.KEY, JSON.stringify(this.consultaUsuario));
-        const myObjStr = JSON.stringify(localStorage.getItem(this.KEY));
-
-        //console.log(myObjStr);
-        //console.log(JSON.parse(myObjStr));
+        localStorage.setItem(this.KEY, JSON.stringify(this.session));
     }
 
     remove() {

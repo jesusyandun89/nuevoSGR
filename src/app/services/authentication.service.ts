@@ -29,11 +29,11 @@ export class AuthenticationService {
       );
   }
 
-  login(login: Login): Observable<ConsultaUsuarios> {
+  login(login: Login): Observable<Session> {
     const url = `${this.domain}login/`;
-    return this.http.post<ConsultaUsuarios>(url, login, httpOptions).pipe(
-      tap((consultausuario: ConsultaUsuarios) => this.log(`Login w/ id=${consultausuario.userSgr}`)),
-      catchError(this.handleError<ConsultaUsuarios>('Login'))
+    return this.http.post<Session>(url, login, httpOptions).pipe(
+      tap((consultausuario: Session) => this.log(`Login w/ id=${consultausuario.mail}`)),
+      catchError(this.handleError<Session>('Login'))
     );
   }
 

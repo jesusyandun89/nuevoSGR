@@ -7,6 +7,7 @@ import { YtblSgrProfile } from '../../model/login/ytblSgrProfile';
 import { YtblSgrModule } from '../../model/login/ytblSgrModule';
 import { YtblSgrRol } from '../../model/login/ytblSgrRol';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Session } from '../../model/login/session';
 
 @Component({
   selector: 'app-empresas',
@@ -15,6 +16,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   animations: [routerTransition()]
 })
 export class EmpresasComponent implements OnInit {
+  sessionAbierta: Session;
   consultaUsuariosObj: ConsultaUsuarios[];
   almacenes: any = {};
   almacenesObj: YtblSgrAlmacenes[];
@@ -30,7 +32,8 @@ export class EmpresasComponent implements OnInit {
   valido: boolean = true;
 
   constructor() {
-    this.consultaUsuariosObj =  JSON.parse(sessionStorage.getItem("session"));
+    this.sessionAbierta =  JSON.parse(sessionStorage.getItem("session"));
+    this.consultaUsuariosObj = this.sessionAbierta.ytblSgrUser;
     
     for(let i = 0; i < this.consultaUsuariosObj.length; i++ ) {
       this.almacenes = this.consultaUsuariosObj[i].ytblSgrAlmacenes;
