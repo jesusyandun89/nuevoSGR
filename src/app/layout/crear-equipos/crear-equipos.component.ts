@@ -156,7 +156,6 @@ export class CrearEquiposComponent implements OnInit {
   guardaEquipos(Equipo) {
     this.tipoTarea = {};
     this.tipoTarea.nameTarea = "Creación de equipos";
-    this.tipoTarea.isValid = true;
 
     this.marcaObj.modeloxMarcas = [];
     this.marcaObj.modeloxMarcas.push(this.modeloObj);
@@ -206,12 +205,9 @@ export class CrearEquiposComponent implements OnInit {
     this.marcaEquipos = [];
     for(let i = 0; i < this.equiposInfo.length; i++) {
       for(let j =0; j < this.equiposInfo[i].marcaxEquipos.length; j++) {
-        this.marca = {};
-        this.marca.idMarca = this.equiposInfo[i].marcaxEquipos[j].idMarca;
-        this.marca.nombreMarca = this.equiposInfo[i].marcaxEquipos[j].nombreMarca;
-        this.marca.modeloxMarcas = this.equiposInfo[i].marcaxEquipos[j].modeloxMarcas;
-
-        this.marcaEquipos.push(this.marca);
+        if(this.equiposInfo[i].idEquipo == id) {
+          this.marcaEquipos.push(this.equiposInfo[i].marcaxEquipos[j]);
+        }
       }
     }
     this.tipoObj = this.equiposInfo.find(x => x.idEquipo == id);
@@ -221,11 +217,9 @@ export class CrearEquiposComponent implements OnInit {
     this.modeloEquipos = [];
     for(let i = 0; i < this.marcaEquipos.length; i++) {
       for(let j = 0; j < this.marcaEquipos[i].modeloxMarcas.length; j++) {
-        this.modelo = {};
-        this.modelo.idModelo = this.marcaEquipos[i].modeloxMarcas[j].idModelo;
-        this.modelo.nombreModelo = this.marcaEquipos[i].modeloxMarcas[j].nombreModelo;
-
-        this.modeloEquipos.push(this.modelo);
+        if(this.marcaEquipos[i].idMarca == id) {
+          this.modeloEquipos.push(this.marcaEquipos[i].modeloxMarcas[j]);
+        }        
       }
     }
     this.marcaObj = this.marcaEquipos.find(x => x.idMarca == id);
