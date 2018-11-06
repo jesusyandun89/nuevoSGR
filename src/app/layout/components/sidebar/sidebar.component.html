@@ -128,7 +128,7 @@
             <a (click)="rltAndLtr()" class="list-group-item">
                 <span><i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>
             </a>
-            <div class="nested-menu">
+            <!--<div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('languages')">
                     <span><i class="fa fa-language"></i>&nbsp; {{ 'Language' | translate }} <b class="caret"></b></span>
                 </a>
@@ -171,7 +171,7 @@
                         </li>
                     </ul>
                 </li>
-            </div>
+            </div>-->
             <div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('profile')">
                     <span><i class="fa fa-user"></i>&nbsp; John Smith</span>
@@ -179,18 +179,8 @@
                 <li class="nested" [class.expand]="showMenu === 'profile'">
                     <ul class="submenu">
                         <li>
-                            <a href="javascript:void(0)">
-                                <span><i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">
-                                <span><i class="fa fa-fw fa-envelope"></i> {{ 'Inbox' | translate }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)">
-                                <span><i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}</span>
+                            <a class="dropdown-item" [routerLink]="['/empresas']">
+                                <i class="fa fa-building"></i> {{ 'Empresas' | translate }}
                             </a>
                         </li>
                         <li>
