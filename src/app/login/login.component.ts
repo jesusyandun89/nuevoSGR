@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
 import { Login } from '../model/login/login';
 import { Session } from '../model/login/session';
+import { Observable } from 'rxjs';
+
+import * as fromRoot from '../state/reducers';
+import * as ApplicationActions from '../state/application/actions';
+import { Store } from '@ngrx/store';
 
 @Component({
     selector: 'app-login',
@@ -22,13 +27,18 @@ export class LoginComponent implements OnInit {
     msg: string;
     form;
 
-    constructor(public router: Router, private loginService: AuthenticationService) {}
+    constructor(public router: Router, private loginService: AuthenticationService, private store: Store<fromRoot.State>) {}
+    $isLoggedIn: Observable<boolean>;
+
+    @HostBinding('class.application') class = 'application';
 
     ngOnInit() {
         this.form = new FormGroup({
             usuario: new FormControl('', Validators.required),
             password: new FormControl('', Validators.required)
         });
+
+        this.$isLoggedIn = this.store.select(fromRoot.selectIsLoggedIn);
     }
 
     onLoggedin() {
@@ -60,9 +70,10 @@ export class LoginComponent implements OnInit {
         this.loginService.login(this.loginEnvio).subscribe((usuario)=>{
             this.session = usuario;
             if(this.session.userLogin == "TRUE") {
-                this.router.navigate(['empresas']);
                 sessionStorage.setItem(this.KEY, JSON.stringify(this.session));
                 this.setSession();
+                this.store.dispatch(new ApplicationActions.LogIn());
+                this.router.navigate(['empresas']);
             } else {
                 this.msg = this.session.msg;
             }

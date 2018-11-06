@@ -15,7 +15,6 @@ const httpOptions = {
 })
 export class CrearEquiposService {
 
-  //private domain: string = "http://192.168.21.152:8088/sgr/sgr2/";
   private domain: string = "/sgr2/"
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
@@ -30,7 +29,7 @@ export class CrearEquiposService {
   }
 
   creacionEquipos(equiposCreacion: EquiposCreacion): Observable<EquiposCreacion> {
-    const url = `${this.domain}/EquiposCreacion/`;
+    const url = `${this.domain}EquiposCreacion/`;
     return this.http.post<EquiposCreacion>(url, equiposCreacion, httpOptions).pipe(
       tap((calculateValue: EquiposCreacion) => this.log(`added CalculateValue w/ ${equiposCreacion}`)),
       catchError(this.handleError<EquiposCreacion>('addEquipos'))

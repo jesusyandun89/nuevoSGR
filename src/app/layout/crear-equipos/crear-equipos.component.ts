@@ -29,7 +29,7 @@ export class CrearEquiposComponent implements OnInit {
   tipoEquipos: Tipo[];
   series: Serie[];
   identificadores: Identificador[];
-
+  valorSerie: string;
   //?Variables objeto usadas para la carga en los arrays
   equipo: any = {};
   modelo: any = {};
@@ -94,43 +94,49 @@ export class CrearEquiposComponent implements OnInit {
 		/* wire up file reader */
     const target: DataTransfer = <DataTransfer>(evt.target);
     this.nombreArchivo = target.files[0].name;
-		if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-		const reader: FileReader = new FileReader();
-		reader.onload = (e: any) => {
-			/* read workbook */
-			const bstr: string = e.target.result;
-			const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
 
-			/* grab first sheet */
-			const wsname: string = wb.SheetNames[0];
-      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-
-			/* save data */
-      this.data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
-      
-      for(let i = 1; i< this.data.length; i++){
-        this.serie = {};
-        this.identificadores = [];
-        this.identificador = {};
-        this.identificador.nombreIdentificador = this.data[i][0];
-        this.identificadores.push(this.identificador);
-        this.identificador = {};
-        this.identificador.nombreIdentificador = this.data[i][1];
-        this.identificadores.push(this.identificador);
-        this.identificador = {};
-        this.identificador.nombreIdentificador = this.data[i][2];
-        this.identificadores.push(this.identificador);
-
-        this.serie.identificador = this.identificadores;
-        this.serie.id = i;
+    if (target.files[0].name.indexOf("xls") != -1 ) {
+      if (target.files.length !== 1) throw new Error('No puede cargar mas de un archivo');
+      const reader: FileReader = new FileReader();
+      reader.onload = (e: any) => {
+        /* read workbook */
+        const bstr: string = e.target.result;
+        const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
+  
+        /* grab first sheet */
+        const wsname: string = wb.SheetNames[0];
+        const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+  
+        /* save data */
+        this.data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
         
-        this.series.push(this.serie);
+        for(let i = 1; i< this.data.length; i++){
+          this.serie = {};
+          this.identificadores = [];
+          this.serie.valor = "";
+          this.serie.valor = this.data[i][0];
+          this.identificador = {};
+          this.identificador.nombreIdentificador = this.data[i][1];
+          this.identificadores.push(this.identificador);
+          this.identificador = {};
+          this.identificador.nombreIdentificador = this.data[i][2];
+          this.identificadores.push(this.identificador);
+  
+          this.serie.identificadores = this.identificadores;
+          this.serie.id = i;
 
-      }
-      this.cargaArchivo = false;
-      console.log(this.series);
-		};
-    reader.readAsBinaryString(target.files[0]);
+          console.log(this.serie);
+          
+          this.series.push(this.serie);
+  
+        }
+        this.cargaArchivo = false;
+      };
+      reader.readAsBinaryString(target.files[0]);
+    } else {
+      alert("El archivo a cargar es incorrecto");
+      throw new Error('El archivo a cargar es incorrecto');
+    }
   }
 
   borraCarga() {
@@ -153,30 +159,53 @@ export class CrearEquiposComponent implements OnInit {
     this.cargaArchivo = true;
   }
   
-  guardaEquipos(Equipo) {
+  guardaEquipos() {
     this.tipoTarea = {};
     this.tipoTarea.nameTarea = "Creación de equipos";
+    this.tipoTarea.id = null;
+    this.tipoTarea.idUser = Number.parseInt(sessionStorage.getItem("usuario"));
 
     this.marcaObj.modeloxMarcas = [];
     this.marcaObj.modeloxMarcas.push(this.modeloObj);
 
+    this.equipoxEmpresa = {};
     this.equipoxEmpresa.idEquipo = this.tipoObj.idEquipo;
     this.equipoxEmpresa.nombreEquipo = this.tipoObj.nombreEquipo;
-    this.equipoxEmpresa.marcaxEquipos = this.marcaObj;
+    this.equipoxEmpresa.marcaxEquipos = [];
+    this.equipoxEmpresa.marcaxEquipos.push(this.marcaObj);
+    this.almacenObj.ytblSgrEmpresa = [];
+    this.almacenObj.ytblSgrEmpresa.push(this.empresaObj);
 
+    this.equipoCreacion = {};
     this.equipoCreacion.tipoTarea = this.tipoTarea;
     this.equipoCreacion.ytblSgrAlmacene = this.almacenObj;
     this.equipoCreacion.equiposxEmpresa = this.equipoxEmpresa;
 
-    this.equipoCreacion.series = [];
-    this.equipoCreacion.series.push(this.series);
+    //this.equipoCreacion.series = [];
+    this.equipoCreacion.series = this.series;
 
     this.creaEquiposService.creacionEquipos(this.equipoCreacion)
-    .subscribe(equipos => {
-      this.msg = "Equipos creados con exito";
+    .subscribe(res => {
+      if(res == null) {
+        this.msg = "Equipos creados con exito";
+        this.limpiar();
+      }else {
+        this.msg = "Error al crear los equipos";
+      }
     })
 
-    console.log(this.equipoCreacion);
+  }
+
+  limpiar() {
+    this.borraCarga();
+    this.equiposInfo = [];
+    this.marcaEquipos = [];
+    this.modeloEquipos = [];
+  }
+
+  closeAlert(event):void {
+    event.preventDefault();
+    this.msg = '';
   }
 
   getInformacion(idEmpresa: number) {
@@ -193,6 +222,16 @@ export class CrearEquiposComponent implements OnInit {
 
   getAlmacenes() {
     this.consultaAlmacenes =  JSON.parse(sessionStorage.getItem("almacenes"));
+    this.consultaAlmacenesObj = [];
+    this.consultaAlmacenesObj = this.consultaAlmacenes;
+    this.consultaAlmacenes = [];
+
+    for(let i = 0; i < this.consultaAlmacenesObj.length; i++) {
+      if(this.consultaAlmacenesObj[i].idHiperk.substring(1, 2) == "C") {
+        this.consultaAlmacenes.push(this.consultaAlmacenesObj[i]);
+      }
+    }
+    
     this.consultaAlmacenes.ytblSgrEmpresa = this.consultaEmpresasObj;
   }
 

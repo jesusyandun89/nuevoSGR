@@ -47,7 +47,7 @@
                 <div *ngIf="mostratInput">
                     <label>Cargar equipos</label>
                     <br>
-                    <input type="file" class="btn btn-info" (change)="onFileChange($event)" id="exampleInputFile">
+                    <input type="file" accept=".xlsx, .xls" class="btn btn-info" (change)="onFileChange($event)" id="exampleInputFile">
                 </div>
                 <div *ngIf="!mostratInput">
                     <label>Archivo cargado</label>
@@ -76,7 +76,8 @@
             <tbody>
                 <tr *ngFor="let serie of series | paginate: { itemsPerPage: 6, currentPage: p }">
                     <th scope="row"> {{serie.id}} </th>
-                    <td *ngFor="let identificador of serie.identificador">{{ identificador.nombreIdentificador }}</td>
+                    <td> {{serie.valor}} </td>
+                    <td *ngFor="let identificador of serie.identificadores">{{ identificador.nombreIdentificador }}</td>
                 </tr>
             </tbody>
         </table>
@@ -85,6 +86,14 @@
             <button class="btn btn-success" (click)="aceptarValores()" >Aceptar</button>
             &nbsp;
             <button class="btn btn-danger" (click)="borraCarga()">Cancelar</button>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="alert alert-success alert-dismissable" *ngIf="msg">
+            <a href="" class="close" (click)="closeAlert($event)">
+            &times;
+            </a>
+            {{msg}}
         </div>
     </div>
 </div>
