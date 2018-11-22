@@ -33,7 +33,15 @@ export class EmpresasComponent implements OnInit {
   valido: boolean = true;
   usuario: number;
 
-  constructor() {
+  constructor(public router: Router) {
+    try {
+      this.sessionAbierta =  JSON.parse(sessionStorage.getItem("session"));
+      if(this.sessionAbierta == null)
+        this.router.navigate(['access-denied']);
+    } catch (error) {
+      alert(error);
+      this.router.navigate(['access-denied']);
+    }
   }
 
   ngOnInit() {

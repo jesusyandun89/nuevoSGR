@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import { Router } from '@angular/router';
+import { Session } from '../../model/login/session';
 
 @Component({
     selector: 'app-dashboard',
@@ -10,8 +12,17 @@ import { routerTransition } from '../../router.animations';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
+    sessionAbierta: Session;
 
-    constructor() {
+    constructor(public router: Router) {
+        try {
+            this.sessionAbierta =  JSON.parse(sessionStorage.getItem("session"));
+            if(this.sessionAbierta == null)
+              this.router.navigate(['access-denied']);
+          } catch (error) {
+            alert(error);
+            this.router.navigate(['access-denied']);
+          }
         this.sliders.push(
             {
                 imagePath: 'assets/images/slider1.jpg',

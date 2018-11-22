@@ -13,6 +13,8 @@ import { Identificador } from '../../model/laboratorio/identificador';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { EquiposCreacion } from '../../model/laboratorio/equiposCreacion';
 import { EquiposxEmpresa } from '../../model/laboratorio/equiposxEmpresa ';
+import { Session } from '../../model/login/session';
+import { Router } from '@angular/router';
 type AOA = any [][];
 
 @Component({
@@ -28,7 +30,7 @@ export class CrearEquiposComponent implements OnInit {
   marcaEquipos: MarcaxEquipos[];
   tipoEquipos: Tipo[];
   series: Serie[];
-  identificadores: Identificador[];
+  identificadores: any[];
   valorSerie: string;
   //?Variables objeto usadas para la carga en los arrays
   equipo: any = {};
@@ -60,8 +62,9 @@ export class CrearEquiposComponent implements OnInit {
   //?Variables usadas para subir los identificadores de los equipos.
   data: AOA = [ [], [] ];
 	wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
-  fileName: string = 'SheetJS.xlsx';
-  identificador: any = {};
+  fileName: string = 'EquiposCrear.xlsx';
+  
+  identificador: any = [];
   equipoCreacion: any = {};
 
   //?Variables objeto
@@ -71,9 +74,20 @@ export class CrearEquiposComponent implements OnInit {
   tipoObj: EquiposxEmpresa;
   marcaObj: MarcaxEquipos;
   modeloObj: ModeloxMarcas;
-  
+  sessionAbierta: Session;
+  dataDownload: AOA = [ [], [] ];
 
-  constructor(private creaEquiposService: CrearEquiposService) {}
+  constructor(private creaEquiposService: CrearEquiposService, public router: Router) {
+    try {
+      this.sessionAbierta =  JSON.parse(sessionStorage.getItem("session"));
+      if(this.sessionAbierta == null)
+        this.router.navigate(['access-denied']);
+
+    } catch (error) {
+      alert(error);
+      this.router.navigate(['access-denied']);
+    }
+  }
 
   form;
   ngOnInit() {
@@ -87,6 +101,39 @@ export class CrearEquiposComponent implements OnInit {
       marca: new FormControl('', Validators.required),
       modelo: new FormControl('', Validators.required)
     })
+  }
+
+  export(): void {
+    this.data = [];
+    this.data.push(this.formatoCarga());
+      
+		/* generate worksheet */
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(this.data);
+    console.log(ws);
+
+		/* generate workbook and add the worksheet */
+		const wb: XLSX.WorkBook = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, 'formatoCreacionEquipos');
+
+		/* save to file */
+		XLSX.writeFile(wb, this.fileName);
+  }
+
+  formatoCarga(): AOA {
+    this.identificadores = [];
+
+    this.identificador = [];
+    this.identificador = "Serie de equipo";
+    this.identificadores.push(this.identificador);
+    this.identificador = [];
+    this.identificador = "Identificador 1";
+    this.identificadores.push(this.identificador);
+    this.identificador = [];
+    this.identificador = "Identificador 2";
+    this.identificadores.push(this.identificador);
+    this.dataDownload = this.identificadores;
+
+    return this.identificadores;
   }
 
   onFileChange(evt: any) {
@@ -124,12 +171,12 @@ export class CrearEquiposComponent implements OnInit {
   
           this.serie.identificadores = this.identificadores;
           this.serie.id = i;
-
-          console.log(this.serie);
           
           this.series.push(this.serie);
   
         }
+
+        console.log(this.data);
         this.cargaArchivo = false;
       };
       reader.readAsBinaryString(target.files[0]);
