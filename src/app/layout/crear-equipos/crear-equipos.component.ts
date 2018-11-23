@@ -76,6 +76,7 @@ export class CrearEquiposComponent implements OnInit {
   modeloObj: ModeloxMarcas;
   sessionAbierta: Session;
   dataDownload: AOA = [ [], [] ];
+  p;
 
   constructor(private creaEquiposService: CrearEquiposService, public router: Router) {
     try {
