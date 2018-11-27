@@ -32,6 +32,7 @@ export class EmpresasComponent implements OnInit {
   form;
   valido: boolean = true;
   usuario: number;
+  usuarioLogIn: string;
 
   constructor(public router: Router) {
     try {
@@ -47,6 +48,7 @@ export class EmpresasComponent implements OnInit {
   ngOnInit() {
       this.sessionAbierta =  JSON.parse(sessionStorage.getItem("session"));
       this.usuario = this.sessionAbierta.ytblSgrUser[0].idUser;
+      this.usuarioLogIn = this.sessionAbierta.ytblSgrUser[0].userSgr;
       this.consultaUsuariosObj = this.sessionAbierta.ytblSgrUser;
       
       for(let i = 0; i < this.consultaUsuariosObj.length; i++ ) {
@@ -79,6 +81,7 @@ export class EmpresasComponent implements OnInit {
       sessionStorage.setItem("perfiles", JSON.stringify(this.perfilesObj));
       sessionStorage.setItem("modulos", JSON.stringify(this.modulosObj));
       sessionStorage.setItem("usuario", JSON.stringify(this.usuario));
+      sessionStorage.setItem("usuarioLogIn", JSON.stringify(this.usuarioLogIn));
 
       this.form = new FormGroup({
         empresa: new FormControl('', Validators.required)

@@ -69,13 +69,17 @@ export class LoginComponent implements OnInit {
     getUser() {
         this.loginService.login(this.loginEnvio).subscribe((usuario)=>{
             this.session = usuario;
-            if(this.session.userLogin == "TRUE") {
+            if(this.session.userLogin == "TRUE" && this.session.ytblSgrUser.length > 0) {
                 sessionStorage.setItem(this.KEY, JSON.stringify(this.session));
                 this.setSession();
                 this.store.dispatch(new ApplicationActions.LogIn());
                 this.router.navigate(['empresas']);
             } else {
-                this.msg = this.session.msg;
+                if(this.msg == null) {
+                    this.msg = "Usuario no tiene asignado modulos"
+                } else {
+                    this.msg = this.session.msg;
+                }
             }
             
         },(error)=>{
@@ -90,5 +94,10 @@ export class LoginComponent implements OnInit {
 
     remove() {
         localStorage.remove(this.KEY);
+    }
+
+    closeAlert(event):void {
+        event.preventDefault();
+        this.msg = '';
     }
 }
