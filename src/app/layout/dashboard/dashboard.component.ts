@@ -15,14 +15,14 @@ export class DashboardComponent implements OnInit {
     sessionAbierta: Session;
 
     constructor(public router: Router) {
-        try {
+        /*try {
             this.sessionAbierta =  JSON.parse(sessionStorage.getItem("session"));
             if(this.sessionAbierta == null)
               this.router.navigate(['access-denied']);
           } catch (error) {
             alert(error);
             this.router.navigate(['access-denied']);
-          }
+          }*/
         this.sliders.push(
             {
                 imagePath: 'assets/images/slider1.jpg',

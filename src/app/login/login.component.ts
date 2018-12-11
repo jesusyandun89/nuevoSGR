@@ -10,6 +10,13 @@ import { Observable } from 'rxjs';
 import * as fromRoot from '../state/reducers';
 import * as ApplicationActions from '../state/application/actions';
 import { Store } from '@ngrx/store';
+import { ConsultaUsuarios } from '../model/login/consultaUsuarios';
+import { YtblSgrAlmacenes } from '../model/login/ytblSgrAlmacenes';
+import { YtblSgrEmpresa } from '../model/login/ytblSgrEmpresa';
+import { YtblSgrRol } from '../model/login/ytblSgrRol';
+import { YtblSgrProfile } from '../model/login/ytblSgrProfile';
+import { YtblSgrModule } from '../model/login/ytblSgrModule';
+
 
 @Component({
     selector: 'app-login',
@@ -26,6 +33,21 @@ export class LoginComponent implements OnInit {
     loginEnvio: Login;
     msg: string;
     form;
+
+    sessionAbierta: Session;
+    consultaUsuariosObj: ConsultaUsuarios[];
+    almacenes: any = {};
+    almacenesObj: YtblSgrAlmacenes[];
+    empresa: any = {};
+    empresasObj: YtblSgrEmpresa[] = [];
+    roles: any = {};
+    rolesObj: YtblSgrRol[];
+    perfiles: any = {};
+    perfilesObj: YtblSgrProfile[];
+    modulos: any = {};
+    modulosObj: YtblSgrModule[];
+    usuario: number;
+    usuarioLogIn: string;
 
     constructor(public router: Router, private loginService: AuthenticationService, private store: Store<fromRoot.State>) {}
     $isLoggedIn: Observable<boolean>;
@@ -90,6 +112,43 @@ export class LoginComponent implements OnInit {
     setSession() {
         localStorage.setItem('isLoggedin', 'true');
         localStorage.setItem(this.KEY, JSON.stringify(this.session));
+
+        this.sessionAbierta =  JSON.parse(sessionStorage.getItem("session"));
+        this.usuario = this.sessionAbierta.ytblSgrUser[0].idUser;
+        this.usuarioLogIn = this.sessionAbierta.ytblSgrUser[0].userSgr;
+        this.consultaUsuariosObj = this.sessionAbierta.ytblSgrUser;
+        
+        for(let i = 0; i < this.consultaUsuariosObj.length; i++ ) {
+            this.almacenes = this.consultaUsuariosObj[i].ytblSgrAlmacenes;
+            this.roles = this.consultaUsuariosObj[i].ytblSgrRol;
+            this.almacenesObj = this.almacenes;
+            this.rolesObj = this.roles;
+        }
+        for(let i = 0; i < this.almacenesObj.length; i++) {
+            for(let j = 0; j < this.almacenesObj[i].ytblSgrEmpresa.length; j++) {
+            this.empresa = this.empresasObj.find(x => x.idEmp === this.almacenesObj[i].ytblSgrEmpresa[j].idEmp);
+            if(this.empresa === undefined) {
+                this.empresa = {};
+                this.empresa = this.almacenesObj[i].ytblSgrEmpresa[j];
+                this.empresasObj.push(this.empresa);
+            }
+            }
+        }
+        for(let i = 0; i < this.rolesObj.length; i++ ) {
+            this.perfiles = this.rolesObj[i].ytblSgrProfile;
+            this.perfilesObj = this.perfiles;
+        }
+        for(let i = 0; i < this.perfilesObj.length; i++ ) {
+            this.modulos = this.perfilesObj[i].ytblSgrModule;
+            this.modulosObj = this.modulos;
+        }
+        sessionStorage.setItem("almacenes", JSON.stringify(this.almacenesObj));
+        sessionStorage.setItem("empresas", JSON.stringify(this.empresasObj));
+        sessionStorage.setItem("roles", JSON.stringify( this.rolesObj));
+        sessionStorage.setItem("perfiles", JSON.stringify(this.perfilesObj));
+        sessionStorage.setItem("modulos", JSON.stringify(this.modulosObj));
+        sessionStorage.setItem("usuario", JSON.stringify(this.usuario));
+        sessionStorage.setItem("usuarioLogIn", JSON.stringify(this.usuarioLogIn));
     }
 
     remove() {

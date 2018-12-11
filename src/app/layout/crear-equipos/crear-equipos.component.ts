@@ -9,7 +9,6 @@ import { YtblSgrEmpresa } from '../../model/login/ytblSgrEmpresa';
 import { YtblSgrAlmacenes } from '../../model/login/ytblSgrAlmacenes';
 import * as XLSX from 'xlsx';
 import { Serie } from '../../model/laboratorio/serie';
-import { Identificador } from '../../model/laboratorio/identificador';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { EquiposCreacion } from '../../model/laboratorio/equiposCreacion';
 import { EquiposxEmpresa } from '../../model/laboratorio/equiposxEmpresa ';
@@ -54,10 +53,7 @@ export class CrearEquiposComponent implements OnInit {
   marcaValida: boolean = false;
   modeloValida: boolean = false;
   valido: boolean = false;
-
-  consultaEmpresasObj: YtblSgrEmpresa[];
-  consultaAlmacenes: any = {};
-  consultaAlmacenesObj: YtblSgrAlmacenes[];
+  p;
 
   //?Variables usadas para subir los identificadores de los equipos.
   data: AOA = [ [], [] ];
@@ -76,10 +72,12 @@ export class CrearEquiposComponent implements OnInit {
   modeloObj: ModeloxMarcas;
   sessionAbierta: Session;
   dataDownload: AOA = [ [], [] ];
-  p;
+  consultaEmpresasObj: YtblSgrEmpresa[];
+  consultaAlmacenes: any = {};
+  consultaAlmacenesObj: YtblSgrAlmacenes[];
 
   constructor(private creaEquiposService: CrearEquiposService, public router: Router) {
-    try {
+    /*try {
       this.sessionAbierta =  JSON.parse(sessionStorage.getItem("session"));
       if(this.sessionAbierta == null)
         this.router.navigate(['access-denied']);
@@ -87,7 +85,7 @@ export class CrearEquiposComponent implements OnInit {
     } catch (error) {
       alert(error);
       this.router.navigate(['access-denied']);
-    }
+    }*/
   }
 
   form;

@@ -1,17 +1,17 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
     <div class="list-group">
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-dashboard"></i>&nbsp;{{ 'Dashboard' | translate }}
+            <i class="fa fa-fw fa-dashboard"></i> {{ 'Dashboard' | translate }}
         </a>
         <div class="nested-menu">
             <a class="list-group-item" (click)="addExpandClass('equipos')">
-                <span><i class="fa fa-fw fa-desktop"></i>&nbsp; {{ 'Equipos' | translate }}</span>
+                <span><i class="fa fa-fw fa-desktop"></i> {{ 'Equipos' | translate }}</span>
             </a>
             <li class="nested" [class.expand]="showMenu === 'equipos'">
                 <ul class="submenu">
                     <li>
                         <a routerLink="/crearequipos" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                            <i class="fa fa-plus-square"></i>&nbsp;{{ 'Crear Equipos' | translate }}
+                            <i class="fa fa-plus-square"></i> {{ 'Crear Equipos' | translate }}
                         </a>
                     </li>
                 </ul>
@@ -20,7 +20,7 @@
                 <ul class="submenu">
                     <li>
                         <a routerLink="/activarequipos" [routerLinkActive]="['router-link-disabled']" class="list-group-item">
-                            <i class="fa fa-check-square"></i>&nbsp;{{ 'Activar Equipos' | translate }}
+                            <i class="fa fa-check-square"></i> {{ 'Activar Equipos' | translate }}
                         </a>
                     </li>
                 </ul>
@@ -29,7 +29,7 @@
                 <ul class="submenu">
                     <li>
                         <a routerLink="/auditoriaequipos" [routerLinkActive]="['router-link-disabled']" class="list-group-item">
-                            <i class="fa fa-calendar-o"></i>&nbsp;{{ 'Auditoria de Equipo' | translate }}
+                            <i class="fa fa-calendar-o"></i> {{ 'Auditoria de Equipo' | translate }}
                         </a>
                     </li>
                 </ul>
@@ -38,7 +38,7 @@
                 <ul class="submenu">
                     <li>
                         <a routerLink="/buscarequipos" [routerLinkActive]="['router-link-disabled']" class="list-group-item">
-                            <i class="fa fa-search"></i>&nbsp;{{ 'Buscar Equipo' | translate }}
+                            <i class="fa fa-search"></i> {{ 'Buscar Equipo' | translate }}
                         </a>
                     </li>
                 </ul>
@@ -47,7 +47,7 @@
                 <ul class="submenu">
                     <li>
                         <a routerLink="/eliminarequipos" [routerLinkActive]="['router-link-disabled']" class="list-group-item">
-                            <i class="fa fa-minus-square"></i>&nbsp;{{ 'Eliminar Equipos' | translate }}
+                            <i class="fa fa-minus-square"></i> {{ 'Eliminar Equipos' | translate }}
                         </a>
                     </li>
                 </ul>
@@ -56,7 +56,7 @@
                 <ul class="submenu">
                     <li>
                         <a routerLink="/cambiarmodelo" [routerLinkActive]="['router-link-disabled']" class="list-group-item">
-                            <i class="fa fa-random"></i>&nbsp;{{ 'Cambiar modelo Equipo' | translate }}
+                            <i class="fa fa-random"></i> {{ 'Cambiar modelo Equipo' | translate }}
                         </a>
                     </li>
                 </ul>
@@ -64,13 +64,13 @@
         </div>
         <div class="nested-menu">
             <a class="list-group-item" (click)="addExpandClass('transfer')">
-                <span><i class="fa fa-exchange"></i>&nbsp; {{ 'Transferencias' | translate }}</span>
+                <span><i class="fa fa-exchange"></i> {{ 'Transferencias' | translate }}</span>
             </a>
             <li class="nested" [class.expand]="showMenu === 'transfer'">
                 <ul class="submenu">
                     <li>
                         <a routerLink="/ingresos" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                            <i class="fa fa-arrow-right"></i>&nbsp;{{ 'Ingreso de Equipos' | translate }}
+                            <i class="fa fa-arrow-right"></i> {{ 'Ingreso de Equipos' | translate }}
                         </a>
                     </li>
                 </ul>
@@ -79,33 +79,33 @@
                 <ul class="submenu">
                     <li>
                         <a routerLink="/egresos" [routerLinkActive]="['router-link-disabled']" class="list-group-item">
-                            <i class="fa fa-arrow-left"></i>&nbsp;{{ 'Egreso de Equipos' | translate }}
+                            <i class="fa fa-arrow-left"></i> {{ 'Egreso de Equipos' | translate }}
                         </a>
                     </li>
                 </ul>
             </li>
         </div>
         <!--<a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;{{ 'Charts' | translate }}
+            <i class="fa fa-fw fa-bar-chart-o"></i> ;{{ 'Charts' | translate }}
         </a>
         <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Tables' | translate }}
+            <i class="fa fa-fw fa-table"></i> ;{{ 'Tables' | translate }}
         </a>
         <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'Forms' | translate }}
+            <i class="fa fa-fw fa-edit"></i> ;{{ 'Forms' | translate }}
         </a>
         <a [routerLink]="['/bs-element']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-desktop"></i>&nbsp;{{ 'Bootstrap Element' | translate }}
+            <i class="fa fa-fw fa-desktop"></i> ;{{ 'Bootstrap Element' | translate }}
         </a>
         <a [routerLink]="['/grid']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-wrench"></i>&nbsp;{{ 'Bootstrap Grid' | translate }}
+            <i class="fa fa-fw fa-wrench"></i> ;{{ 'Bootstrap Grid' | translate }}
         </a>
         <a [routerLink]="['/components']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-th-list"></i>&nbsp;{{ 'Component' | translate }}
+            <i class="fa fa-th-list"></i> ;{{ 'Component' | translate }}
         </a>
         <div class="nested-menu">
             <a class="list-group-item" (click)="addExpandClass('pages')">
-                <span><i class="fa fa-plus"></i>&nbsp; {{ 'Menu' | translate }}</span>
+                <span><i class="fa fa-plus"></i> ; {{ 'Menu' | translate }}</span>
             </a>
             <li class="nested" [class.expand]="showMenu === 'pages'">
                 <ul class="submenu">
@@ -122,15 +122,15 @@
             </li>
         </div>
         <a [routerLink]="['/blank-page']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-file-o"></i>&nbsp;{{ 'Blank Page' | translate }}
+            <i class="fa fa-file-o"></i> ;{{ 'Blank Page' | translate }}
         </a>-->
         <div class="header-fields">
             <a (click)="rltAndLtr()" class="list-group-item">
-                <span><i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>
+                <span><i class="fa fa-arrows-h"></i> RTL/LTR</span>
             </a>
             <!--<div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('languages')">
-                    <span><i class="fa fa-language"></i>&nbsp; {{ 'Language' | translate }} <b class="caret"></b></span>
+                    <span><i class="fa fa-language"></i> ; {{ 'Language' | translate }} <b class="caret"></b></span>
                 </a>
                 <li class="nested" [class.expand]="showMenu === 'languages'">
                     <ul class="submenu">
@@ -174,7 +174,7 @@
             </div>-->
             <div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('profile')">
-                    <span><i class="fa fa-user"></i>&nbsp; John Smith</span>
+                    <span><i class="fa fa-user"></i> {{ usuarioLogIn }}</span>
                 </a>
                 <li class="nested" [class.expand]="showMenu === 'profile'">
                     <ul class="submenu">
@@ -185,7 +185,7 @@
                         </li>
                         <li>
                             <a [routerLink]="['/login']" (click)="onLoggedout()">
-                                <span><i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}</span>
+                                <span><i class="fa fa-fw fa-power-off"></i> {{ 'Salir' | translate }}</span>
                             </a>
                         </li>
                     </ul>

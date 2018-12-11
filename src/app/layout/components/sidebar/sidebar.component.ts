@@ -11,12 +11,11 @@ export class SidebarComponent {
     isActive: boolean = false;
     showMenu: string = '';
     pushRightClass: string = 'push-right';
+    usuarioLogIn: string;
 
     constructor(private translate: TranslateService, public router: Router) {
-        this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
-        this.translate.setDefaultLang('es');
-        const browserLang = this.translate.getBrowserLang();
-        this.translate.use(browserLang.match(/en|fr|ur|es|it|fa|de/) ? browserLang : 'en');
+        this.usuarioLogIn =  sessionStorage.getItem("usuarioLogIn").toUpperCase().toString().replace('"', " ");
+        this.usuarioLogIn = this.usuarioLogIn.replace('"', " ");
 
         this.router.events.subscribe(val => {
             if (

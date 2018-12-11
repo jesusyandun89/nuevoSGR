@@ -2,13 +2,13 @@
   <app-page-header [heading]="'Crear Equipos'" [icon]="'fa-edit'"></app-page-header>
     <div class="row" [hidden]="!cargaArchivo">
     <div class="col-lg-12">
-        <button (click)="export()" class="btn btn-primary"><i class="fa fa-download" aria-hidden="true"></i> Export!</button>
+        <button (click)="export()" class="btn btn-primary"><i class="fa fa-download" aria-hidden="true"></i> Formato</button>
     </div>
     <div class="col-lg-6">
             <fieldset class="form-group">
-                <label>Bodega</label>
+                <label>Laboratorio</label>
                 <select class="form-control" (change)="asignaAlmacen($event.target.value)" formControlName="almacen">
-                    <option value="?"> --Elija la bodega-- </option>
+                    <option value="?"> --Elija la Laboratorio-- </option>
                     <option *ngFor="let almacen of consultaAlmacenes" value="{{almacen.idAlma}}"> 
                         {{almacen.nombreHiperk}} 
                     </option>
@@ -87,7 +87,7 @@
         <pagination-controls (pageChange)="p=$event" class="col-lg-8"></pagination-controls>
         <div class="col-lg-4 botonesTabla">
             <button class="btn btn-success" (click)="aceptarValores()" >Aceptar</button>
-            &nbsp;
+            <br>
             <button class="btn btn-danger" (click)="borraCarga()">Cancelar</button>
         </div>
     </div>
